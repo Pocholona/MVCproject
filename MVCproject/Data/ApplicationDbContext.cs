@@ -6,11 +6,7 @@ using MVCproject.Models;
 
 namespace MVCproject.Data
 {
-    public class ApplicationDbContext : IdentityDbContext<AppUser>
+    public class ApplicationDbContext(DbContextOptions options) : IdentityDbContext<AppUser>(options)
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options) 
-        { 
-
-        }
     }
 }
