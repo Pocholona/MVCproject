@@ -1,4 +1,24 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using MVCproject.Data;
+using MVCproject.Models;
+
 var builder = WebApplication.CreateBuilder(args);
+
+// Add SQL Server configuration
+builder.Services.AddDbContext<ApplicationDbContext>(options =>
+    {
+        options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
+    });
+// Add Services to Identity
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
+    { 
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 8;
+    })
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
+    ;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -16,6 +36,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
