@@ -15,7 +15,8 @@ namespace MVCproject.Controllers
             _singInManager = singInManager;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult SignUp()
         {
             return View();
         }
