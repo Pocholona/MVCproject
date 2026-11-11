@@ -1,6 +1,7 @@
-using MVCproject.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using MVCproject.Data;
+using MVCproject.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +11,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
     });
 // Add Services to Identity
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => 
+builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
     { 
         options.Password.RequireDigit = true;
         options.Password.RequiredLength = 8;
