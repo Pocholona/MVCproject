@@ -1,5 +1,38 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@model SignUpViewModel
+
+<h2 class="mb-3">Sign Up User</h2>
+<form asp-action="SignUp" method="POST">
+
+    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label asp-for="Name" ></label>
+            <input asp-for="Name" placeholder="Nombre usuario" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div> 
+        <div class="col-md-6 mb-3">
+            <label asp-for="Email"></label>
+            <input asp-for="Email" placeholder="Correo electrónico" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+        
+        <div class="col-md-6 mb-3">
+            <label asp-for="Password"></label>
+            <input asp-for="Password" placeholder="Contraseña" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <div class="col-md-6 mb-3">
+            <label asp-for="ConfirmPassword"></label>
+            <input asp-for="ConfirmPassword" placeholder="Contraseña" />
+            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+        </div>
+
+       <button type="submit" class="btn btn-primary" >Sign In</button>
+
+    </div>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
 }
