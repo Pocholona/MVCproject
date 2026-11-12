@@ -58,14 +58,14 @@ namespace MVCproject.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> LogIn(SignUpViewModel model)
+        public async Task<IActionResult> LogIn(LoginViewModel model, string? returnUrl = null)
         {
+            ViewData["ReturnUrl"] = returnUrl;
+
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-
-
 
             var result = await _singInManager.PasswordSignInAsync(
                     model.Email,
@@ -76,6 +76,10 @@ namespace MVCproject.Controllers
 
             if (result.Succeeded)
             {
+                // Redirigir solo si es una URL local válida
+                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                    return Redirect(returnUrl);
+
                 return RedirectToAction("Index", "Home");
             }
 
