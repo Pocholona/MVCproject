@@ -84,7 +84,7 @@ namespace MVCproject.Controllers
 
         // LogOut
         [HttpPost]
-        public async Task<IActionResult> LogOut(LoginViewModel model) 
+        public async Task<IActionResult> LogOut() 
         {
             await _singInManager.SignOutAsync();
             return RedirectToAction("LogIn", "Account");

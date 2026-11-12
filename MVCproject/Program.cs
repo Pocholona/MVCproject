@@ -25,6 +25,14 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
+// Add Cookie configuration to User session
+builder.Services.ConfigureApplicationCookie(options =>
+    {
+        // add time to expire, this don't start to count while you are using the application. 
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.SlidingExpiration = true;
+    });
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
