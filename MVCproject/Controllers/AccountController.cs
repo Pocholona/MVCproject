@@ -60,26 +60,25 @@ namespace MVCproject.Controllers
             {
                 return View(model);
             }
+            // Comprobamos que existe el usuario:
+            var user = await _userManager.FindByEmailAsync(model.Email);
 
-            var result = await _singInManager.PasswordSignInAsync(
-                    model.Email,
-                    model.Password,
-                    model.RememberMe,
-                    lockoutOnFailure: false // no bloqueará la cuenta tras varios intentos fallidos
-                );
-
-            if (result.Succeeded)
+            if (user == null)
             {
-                // Redirigir solo si es una URL local válida
-                if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
-                    return Redirect(returnUrl);
-
-                return RedirectToAction("Index", "Home");
+                ModelState.AddModelError("", "No existe usuario con ese email");
+                return View(model);
             }
+            // verifico la contraseña
+            var passwordValid = await _userManager.CheckPasswordAsync(user, model.Password);
+            if (!passwordValid) 
+            {
+                ModelState.AddModelError("", "Credenciales incorrectas");
+                return View(model);
+            }
+            // SingIn con email y contraseña
+            await _singInManager.SignInAsync(user, model.RememberMe);
 
-            ModelState.AddModelError("", "Credenciales incorrectas");
-
-            return View(model);
+            return RedirectToAction("Index", "Home");
 
         }
     }
