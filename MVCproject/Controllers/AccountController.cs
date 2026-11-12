@@ -56,5 +56,33 @@ namespace MVCproject.Controllers
         {
             return View();
         }
+
+        [HttpPost]
+        public async Task<IActionResult> LogIn(SignUpViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+
+
+            var result = await _singInManager.PasswordSignInAsync(
+                    model.Email,
+                    model.Password,
+                    model.RememberMe,
+                    lockoutOnFailure: false // no bloqueará la cuenta tras varios intentos fallidos
+                );
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            ModelState.AddModelError("", "Credenciales incorrectas");
+
+            return View(model);
+
+        }
     }
 }
