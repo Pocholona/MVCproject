@@ -1,5 +1,6 @@
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MVCproject.Data;
 using MVCproject.Models;
 
@@ -11,20 +12,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
         options.UseSqlServer(builder.Configuration.GetConnectionString("Default"));
     });
 // Add Services to Identity
-builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
-    { 
-        options.Password.RequireDigit = true;
-        options.Password.RequiredLength = 6;
-        options.User.RequireUniqueEmail = true;
-        // SignIn (requisitos para permitir login)
-        options.SignIn.RequireConfirmedEmail = false; // en prod: true
-        options.SignIn.RequireConfirmedPhoneNumber = false;
-        options.SignIn.RequireConfirmedAccount = false; // si usas plantillas con confirmaciçon
-        // Lockout
-        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
-        options.Lockout.MaxFailedAccessAttempts = 5;
-        options.Lockout.AllowedForNewUsers = true;
-    })
+builder.Services.AddIdentity<AppUser, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
 
@@ -35,13 +23,28 @@ builder.Services.ConfigureApplicationCookie(options =>
         options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
         options.SlidingExpiration = true;
         // Standar Routes
-        options.LoginPath = "/Account/LogIn";
-        options.LogoutPath = "/Account/LogOut";
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
         options.AccessDeniedPath = "/Account/AccessDenied";
         // Return
         options.ReturnUrlParameter = "ReturnUrl";
     });
 
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = true;
+    options.Password.RequiredLength = 6;
+    options.User.RequireUniqueEmail = true;
+    // SignIn (requisitos para permitir login)
+    options.SignIn.RequireConfirmedEmail = false; // en prod: true
+    options.SignIn.RequireConfirmedPhoneNumber = false;
+    options.SignIn.RequireConfirmedAccount = false; // si usas plantillas con confirmaciçon
+                                                    // Lockout
+    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+    options.Lockout.MaxFailedAccessAttempts = 5;
+    options.Lockout.AllowedForNewUsers = true;
+});
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

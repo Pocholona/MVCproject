@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using MVCproject.Models;
+
 
 namespace MVCproject.Controllers
 {
@@ -8,7 +10,7 @@ namespace MVCproject.Controllers
     {
         private readonly UserManager<AppUser> _userManager = userManager;
         private readonly SignInManager<AppUser> _singInManager = singInManager;
-
+        
         // SignUp / Registro nuevo usuario
         [HttpGet]
         public IActionResult SignUp()
@@ -33,23 +35,24 @@ namespace MVCproject.Controllers
             var result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Login");
             }
 
             foreach (var error in result.Errors) 
             {
                 ModelState.AddModelError("", error.Description);
             }
-            return View(model);
 
+            return View(model);
         }
 
         // LogIn / Inicio de sesión 
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult LogIn(string? returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
-            return View(returnUrl);
+            return View();
         }
 
         [HttpPost]
@@ -80,10 +83,15 @@ namespace MVCproject.Controllers
             await _singInManager.SignInAsync(user, model.RememberMe);
 
             if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+            {
                 return RedirectToAction(returnUrl);
+            }
+            //else
+            //{
+            //    return RedirectToAction("Index", "Home");
+            //}
 
-            return RedirectToAction("Index", "Home");
-
+            return View(model);
         }
 
         // LogOut
@@ -96,6 +104,14 @@ namespace MVCproject.Controllers
                 return RedirectToAction(returnUrl);
 
             return RedirectToAction("LogIn", "Account");
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }
