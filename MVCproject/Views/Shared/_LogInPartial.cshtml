@@ -15,9 +15,11 @@
             </a>
             </li>
         <li class="nav-item">
-            <a class="nav-link" asp-controller="Account" asp-action="LogOut">
-                Cerrar Sesión
-            </a>
+            <form class="d-inline" asp-controller="Account" asp-action="LogOut" method="POST">
+                <button type="submit" class="nav-link btn btn-link text-dark">
+                    Cerrar Sesión
+                </button>
+            </form>
         </li>
     }
     else

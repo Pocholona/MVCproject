@@ -81,5 +81,13 @@ namespace MVCproject.Controllers
             return RedirectToAction("Index", "Home");
 
         }
+
+        // LogOut
+        [HttpPost]
+        public async Task<IActionResult> LogOut(LoginViewModel model) 
+        {
+            await _singInManager.SignOutAsync();
+            return RedirectToAction("LogIn", "Account");
+        }
     }
 }
