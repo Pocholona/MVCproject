@@ -1,6 +1,6 @@
 ﻿@model SignUpViewModel
 
-<h2 class="mb-3">Sign Up User</h2>
+<h2 class="mb-3">Registrarse / Sign Up</h2>
 <form asp-action="SignUp" method="POST">
 
     <div asp-validation-summary="All" class="text-danger mb-3"></div>
@@ -24,11 +24,11 @@
 
         <div class="col-md-6 mb-3">
             <label asp-for="ConfirmPassword"></label>
-            <input asp-for="ConfirmPassword" placeholder="Contraseña" />
+            <input asp-for="ConfirmPassword" placeholder="Confirmar Contraseña" />
             <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
         </div>
 
-       <button type="submit" class="btn btn-primary" >Sign In</button>
+       <button type="submit" class="btn btn-primary m-auto" >Sign In</button>
 
     </div>
 </form>

@@ -20,5 +20,35 @@ namespace MVCproject.Controllers
         {
             return View();
         }
+        // SignUp Registro nuevo usuario
+        [HttpPost]
+        public async Task<IActionResult> SignUp(SignUpViewModel model) 
+        {
+            if (!ModelState.IsValid) 
+            {
+                return View(model);
+            }
+
+            var user = new AppUser
+            {
+                UserName = model.Name,
+                Email = model.Email,
+                PhoneNumber = model.PhoneNumber
+            };
+
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            foreach (var error in result.Errors) 
+            {
+                ModelState.AddModelError("", error.Description);
+            }
+            return View(model);
+
+        }
+
     }
 }

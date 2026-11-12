@@ -5,6 +5,6 @@ namespace MVCproject.Models
     public class AppUser : IdentityUser
     {
         public bool UserStatus { get; set; } = false;
-        public DateTime CreateAt { get; set; }
+        public DateTime CreateAt { get; set; } = DateTime.Today;
     }
 }

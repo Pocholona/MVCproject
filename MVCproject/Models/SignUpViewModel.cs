@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.Identity;
 
 namespace MVCproject.Models
 {
-    public class SignUpViewModel
+    public class SignUpViewModel 
     {
+        // Datos mínimos para el registro
         [Required(ErrorMessage = "Debe completar el nombre")]
         [DisplayName("Nombre")]
         public required string Name { get; set; }
@@ -24,10 +24,18 @@ namespace MVCproject.Models
         [Required(ErrorMessage = "Debe confirmar la Contraseña.")]
         [DataType(DataType.Password)]
         [DisplayName("Confirmar contraseña")]
-        [Compare("Confirmar contraseña")]
+        [Compare("Password", ErrorMessage = "Las contraseñas no coinciden")]
         public string? ConfirmPassword { get; set; }
 
         [DisplayName("Recuérdame")]
         public bool RememberMe { get; set; } = false;
+
+        // Datos personales
+
+        //[Required(ErrorMessage = "El teléfono es obligatorio")]
+        [Phone(ErrorMessage = "Debe ingresar un número de teléfono válido")]
+        [DisplayName("Teléfono")]
+        public string? PhoneNumber { get; set; }
+
     }
 }
