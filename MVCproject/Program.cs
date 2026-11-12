@@ -20,7 +20,10 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
         options.SignIn.RequireConfirmedEmail = false; // en prod: true
         options.SignIn.RequireConfirmedPhoneNumber = false;
         options.SignIn.RequireConfirmedAccount = false; // si usas plantillas con confirmaciçon
-        options.Lockout.AllowedForNewUsers = false;
+        // Lockout
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(15);
+        options.Lockout.MaxFailedAccessAttempts = 5;
+        options.Lockout.AllowedForNewUsers = true;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
@@ -29,7 +32,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 builder.Services.ConfigureApplicationCookie(options =>
     {
         // add time to expire, this don't start to count while you are using the application. 
-        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
         options.SlidingExpiration = true;
     });
 
