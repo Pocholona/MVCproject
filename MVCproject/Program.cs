@@ -34,6 +34,12 @@ builder.Services.ConfigureApplicationCookie(options =>
         // add time to expire, this don't start to count while you are using the application. 
         options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
         options.SlidingExpiration = true;
+        // Standar Routes
+        options.LoginPath = "/Account/LogIn";
+        options.LogoutPath = "/Account/LogOut";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        // Return
+        options.ReturnUrlParameter = "ReturnUrl";
     });
 
 // Add services to the container.
