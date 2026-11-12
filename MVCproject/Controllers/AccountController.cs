@@ -46,9 +46,10 @@ namespace MVCproject.Controllers
 
         // LogIn / Inicio de sesión 
         [HttpGet]
-        public IActionResult LogIn()
+        public IActionResult LogIn(string? returnUrl = null)
         {
-            return View();
+            ViewData["ReturnUrl"] = returnUrl;
+            return View(returnUrl);
         }
 
         [HttpPost]
@@ -78,15 +79,22 @@ namespace MVCproject.Controllers
             // SingIn con email y contraseña
             await _singInManager.SignInAsync(user, model.RememberMe);
 
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return RedirectToAction(returnUrl);
+
             return RedirectToAction("Index", "Home");
 
         }
 
         // LogOut
         [HttpPost]
-        public async Task<IActionResult> LogOut() 
+        public async Task<IActionResult> LogOut( string? returnUrl = null) 
         {
             await _singInManager.SignOutAsync();
+
+            if (!string.IsNullOrEmpty(returnUrl) && Url.IsLocalUrl(returnUrl))
+                return RedirectToAction(returnUrl);
+
             return RedirectToAction("LogIn", "Account");
         }
     }
