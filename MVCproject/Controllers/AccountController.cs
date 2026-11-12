@@ -15,12 +15,12 @@ namespace MVCproject.Controllers
             _singInManager = singInManager;
         }
 
+        // SignUp / Registro nuevo usuario
         [HttpGet]
         public IActionResult SignUp()
         {
             return View();
         }
-        // SignUp Registro nuevo usuario
         [HttpPost]
         public async Task<IActionResult> SignUp(SignUpViewModel model) 
         {
@@ -50,5 +50,11 @@ namespace MVCproject.Controllers
 
         }
 
+        // LogIn / Inicio de sesión 
+        [HttpGet]
+        public IActionResult LogIn()
+        {
+            return View();
+        }
     }
 }
