@@ -4,16 +4,10 @@ using MVCproject.Models;
 
 namespace MVCproject.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> singInManager) : Controller
     {
-        private readonly UserManager<AppUser> _userManager;
-        private readonly SignInManager<AppUser> _singInManager;
-
-        public AccountController(UserManager<AppUser> userManager, SignInManager<AppUser> singInManager)
-        {
-            _userManager = userManager;
-            _singInManager = singInManager;
-        }
+        private readonly UserManager<AppUser> _userManager = userManager;
+        private readonly SignInManager<AppUser> _singInManager = singInManager;
 
         // SignUp / Registro nuevo usuario
         [HttpGet]

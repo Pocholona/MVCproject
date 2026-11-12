@@ -14,11 +14,16 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddIdentity<AppUser, IdentityRole>(options => 
     { 
         options.Password.RequireDigit = true;
-        options.Password.RequiredLength = 8;
+        options.Password.RequiredLength = 6;
+        options.User.RequireUniqueEmail = true;
+        // SignIn (requisitos para permitir login)
+        options.SignIn.RequireConfirmedEmail = false; // en prod: true
+        options.SignIn.RequireConfirmedPhoneNumber = false;
+        options.SignIn.RequireConfirmedAccount = false; // si usas plantillas con confirmaciçon
+        options.Lockout.AllowedForNewUsers = false;
     })
     .AddEntityFrameworkStores<ApplicationDbContext>()
     .AddDefaultTokenProviders();
-    ;
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
